@@ -1,1 +1,1 @@
-worker python3 plusidentity_beta.py
+worker python3 naco-bot.py
