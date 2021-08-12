@@ -3,12 +3,9 @@ from discord import message
 from discord.ext import commands
 import random
 
-import hashlib, binascii
-# from Crypto.Cipher import AES
-
 import json
 
-game = discord.Game("404 Not Found")
+game = discord.Game("자경 스피드패작")
 bot = commands.Bot(command_prefix='!', Status=discord.Status.online, activity=game)
 
 def tier(score_int):
@@ -26,13 +23,6 @@ def tier(score_int):
         return "<:master:875330454998368266>"
     elif 4000 <= int(score_int):
         return "<:grandmaster:875330489525862470>"
-
-def f_sha512(ctx):
-    return hashlib.sha512(str(ctx).encode("utf-8")).hexdigest()
-
-def f_pbkdf2(mess, salt, itr):
-    dk = hashlib.pbkdf2_hmac('sha256', f'{str(mess).encode("utf-8")}', f'{str(salt).encode("utf-8")}', int(itr))
-    return binascii.hexlify(dk)
 
 @bot.event
 async def on_ready():
@@ -55,22 +45,6 @@ async def hello(ctx):
 async def dice(ctx, number:int):
     await ctx.send(f'주사위를 굴려서 {random.randint(1, int(number))}이 나왔습니다')
 
-@bot.command()
-async def sha512(ctx):
-    await ctx.send(f'Output : {f_sha512(ctx)}')
-
-@bot.command()
-async def pbkdf2(ctx):
-    dk2 = hashlib.pbkdf2_hmac('sha256', b'testMessage', b'testSalt', 100004)
-    await ctx.send(f'{binascii.hexlify(dk2)}')
-
-@bot.command()
-async def fpbkdf2(ctx, mess, salt, itr):
-    await ctx.send(f'Output : {f_pbkdf2(mess, salt, itr)}')
-
-@bot.command()
-async def abcpbkdf2(ctx):
-    await ctx.send(f'Output : {f_pbkdf2("testMessage", "testSalt", 100004)}')
 
 @bot.command()
 async def commands(ctx):
