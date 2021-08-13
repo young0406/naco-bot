@@ -1,6 +1,7 @@
 import discord, os
 from discord import message
 from discord.ext import commands
+from discord_components import DiscordComponents, Button, ButtonStyle, InteractionType
 import random
 
 import json
@@ -45,7 +46,21 @@ async def dice(ctx, number:int):
 
 @bot.command(aliases=['가위바위보'])
 async def rsp(ctx, number:int):
-    await ctx.send(f'주사위를 굴려서 {random.randint(1, int(number))}이 나왔습니다')
+    await ctx.send(
+        "Content",
+        components=[
+            Button(style=ButtonStyle.blue, label="Blue"),
+            Button(style=ButtonStyle.red, label="Red"),
+            Button(style=ButtonStyle.URL, label="url", url="https://example.org"),
+        ],
+    )
+
+    res = await bot.wait_for("button_click")
+    if res.channel == msg.channel:
+        await res.respond(
+            type=InteractionType.ChannelMessageWithSource,
+            content=f'{res.component.label} clicked'
+        )
 
 
 @bot.command()
