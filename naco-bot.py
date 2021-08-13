@@ -11,15 +11,14 @@ game = discord.Game("자경 스피드패작?")
 bot = commands.Bot(command_prefix='!', Status=discord.Status.online, activity=game)
 client = discord.Client()
 
-@client.event
-async def on_message(message):
-    if message.content.startswith('!shop'):
-        embed = discord.Embed(title="SHOP BOT",description="SHOP 아이템 목록. 쇼핑을 합시다", color=0x00aaaa)
-        embed.add_field(name="STEP🦶", value="빠르게 이동한다", inline=False)
-        embed.add_field(name="STUN⚔️", value="스턴!", inline=False)
-        msg = await message.channel.send(embed=embed)
-        await msg.add_reaction("🦶") #step
-        await msg.add_reaction("⚔️") #stun
+@bot.command(name='feedback', help='Ask person for feedback')
+async def shop(ctx):
+    embed = discord.Embed(title="SHOP BOT",description="SHOP 아이템 목록. 쇼핑을 합시다", color=0x00aaaa)
+    embed.add_field(name="STEP🦶", value="빠르게 이동한다", inline=False)
+    embed.add_field(name="STUN⚔️", value="스턴!", inline=False)
+    msg = await message.channel.send(embed=embed)
+    await msg.add_reaction("🦶") #step
+    await msg.add_reaction("⚔️") #stun
 
 @client.event
 async def on_reaction_add(reaction, user):
