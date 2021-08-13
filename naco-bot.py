@@ -1,6 +1,8 @@
 import discord, os
+import asyncio
 from discord import message
 from discord.ext import commands
+from discord.ext.commands import Bot
 import random
 
 import json
