@@ -7,6 +7,7 @@ import json
 
 game = discord.Game("자경 스피드패작")
 bot = commands.Bot(command_prefix='!', Status=discord.Status.online, activity=game)
+client = discord.Client()
 
 def tier(score_int):
     if int(score_int) < 1500:
@@ -30,10 +31,8 @@ async def on_ready():
     print(f'{bot.user} has connected to Discord!')
     return
 
-@bot.event
+@client.event
 async def on_reaction_add(reaction, user):
-    if user.bot == 1:
-        return None
     await reaction.message.send(f'{user.name} pressed {str(reaction.emoji)}')
 
 @bot.command(aliases=['hi'])
