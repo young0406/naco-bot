@@ -15,7 +15,7 @@ async def shop(ctx):
     embed = discord.Embed(title="SHOP BOT",description="SHOP 아이템 목록. 쇼핑을 합시다", color=0x00aaaa)
     embed.add_field(name="STEP🦶", value="빠르게 이동한다", inline=False)
     embed.add_field(name="STUN⚔️", value="스턴!", inline=False)
-    msg = await message.channel.send(embed=embed)
+    msg = await ctx.send(embed=embed)
     await msg.add_reaction("🦶") #step
     await msg.add_reaction("⚔️") #stun
 
