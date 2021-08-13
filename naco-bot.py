@@ -34,8 +34,7 @@ async def on_ready():
 async def on_reaction_add(reaction, user):
     if user.bot == 1:
         return None
-    if str(reaction.emoji) == "<:ranker:875330517166338098>":
-        await reaction.message.send(f'{user.name} pressed <:ranker:875330517166338098>')
+    await reaction.message.send(f'{user.name} pressed {str(reaction.emoji)}')
 
 @bot.command(aliases=['hi'])
 async def hello(ctx):
