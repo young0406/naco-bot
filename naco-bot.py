@@ -33,7 +33,7 @@ async def on_ready():
 
 @client.event
 async def on_reaction_add(reaction, user):
-    await reaction.message.send(f'{user.name} pressed {str(reaction.emoji)}')
+    await reaction.message.channel.send(f'{user.name} pressed {str(reaction.emoji)}')
 
 @bot.command(aliases=['hi'])
 async def hello(ctx):
