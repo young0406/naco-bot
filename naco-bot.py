@@ -2,7 +2,6 @@ import discord, os
 import asyncio
 from discord import message
 from discord.ext import commands
-from discord.ext.commands import Bot
 import random
 
 import json
@@ -50,34 +49,6 @@ async def on_ready():
     print('Bot initialized')
     print(f'{bot.user} has connected to Discord!')
     return
-
-@bot.command(name='feedback', help='Ask person for feedback')
-async def roll(ctx):
-    message = await ctx.send('Are you enjoying this bot? \n :thumbsup: :-1: ')
-
-    thumb_up = '👍'
-    thumb_down = '👎'
-
-    await message.add_reaction(thumb_up)
-    await message.add_reaction(thumb_down)
-
-    def check(reaction, user):
-        return user == ctx.author and str(reaction.emoji) in [thumb_up, thumb_down]
-
-    member = ctx.author
-
-    while True:
-        try:
-            reaction, user = await client.wait_for("reaction_add", timeout=10.0, check=check)
-
-            if str(reaction.emoji) == thumb_up:
-                await ctx.send('Thank you for your feedback')
-
-
-            if str(reaction.emoji) == thumb_down:
-                await ctx.send('Sorry you feel that way')
-        finally:
-            await ctx.send('I dont know')
             
 @bot.command(aliases=['hi'])
 async def hello(ctx):
