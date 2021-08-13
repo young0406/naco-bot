@@ -34,8 +34,8 @@ async def on_ready():
 async def on_reaction_add(reaction, user):
     if user.bot == 1:
         return None
-    if str(reaction.emoji) == "\U0001F600":
-        await reaction.message.send(f'{user.name} pressed \U0001F600')
+    if str(reaction.emoji) == "<:ranker:875330517166338098>":
+        await reaction.message.send(f'{user.name} pressed <:ranker:875330517166338098>')
 
 @bot.command(aliases=['hi'])
 async def hello(ctx):
@@ -45,14 +45,18 @@ async def hello(ctx):
 async def dice(ctx, number:int):
     await ctx.send(f'주사위를 굴려서 {random.randint(1, int(number))}이 나왔습니다')
 
+@bot.command(aliases=['가위바위보'])
+async def rsp(ctx, number:int):
+    await ctx.send(f'주사위를 굴려서 {random.randint(1, int(number))}이 나왔습니다')
+
 
 @bot.command()
 async def commands(ctx):
-    embed = discord.Embed(title="PlusIdentity", description="PlusIdentity Discord Bot by Young", color=0x4432a8)
+    embed = discord.Embed(title="Naco Bot", description="Made bt Naco#0801", color=0x4432a8)
     embed.add_field(name="1. Hello", value="!hello", inline=False)
     embed.add_field(name="2. Dice", value="!dice [int]", inline=False)
     message = await ctx.send(embed=embed)
-    await message.add_reaction("\U0001F600")
+    await message.add_reaction("<:ranker:875330517166338098>")
 
 @bot.command(aliases=['기록'])
 async def history(ctx, account_num, match_num):
