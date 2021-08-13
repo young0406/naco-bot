@@ -1,7 +1,6 @@
 import discord, os
 from discord import message
 from discord.ext import commands
-from discord_components import DiscordComponents, Button, ButtonStyle, InteractionType
 import random
 
 import json
@@ -34,8 +33,36 @@ async def on_ready():
 
 @client.event
 async def on_reaction_add(reaction, user):
-    await reaction.message.channel.send(f'{user.name} pressed {str(reaction.emoji)}')
+    await reaction.message.send(f'{user.name} pressed {str(reaction.emoji)}')
 
+@bot.command(name='feedback', help='Ask person for feedback')
+async def roll(ctx):
+    message = await ctx.send('Are you enjoying this bot? \n :thumbsup: :-1: ')
+
+    thumb_up = '👍'
+    thumb_down = '👎'
+
+    await message.add_reaction(thumb_up)
+    await message.add_reaction(thumb_down)
+
+    def check(reaction, user):
+        return user == ctx.author and str(reaction.emoji) in [thumb_up, thumb_down]
+
+    member = ctx.author
+
+    while True:
+        try:
+            reaction, user = await client.wait_for("reaction_add", timeout=10.0, check=check)
+
+            if str(reaction.emoji) == thumb_up:
+                await ctx.send('Thank you for your feedback')
+
+
+            if str(reaction.emoji) == thumb_down:
+                await ctx.send('Sorry you feel that way')
+        finally:
+            await ctx.send('I dont know')
+            
 @bot.command(aliases=['hi'])
 async def hello(ctx):
     await ctx.send(f'Hello, {ctx.author.mention}!')
@@ -46,21 +73,7 @@ async def dice(ctx, number:int):
 
 @bot.command(aliases=['가위바위보'])
 async def rsp(ctx, number:int):
-    await ctx.send(
-        "Content",
-        components=[
-            Button(style=ButtonStyle.blue, label="Blue"),
-            Button(style=ButtonStyle.red, label="Red"),
-            Button(style=ButtonStyle.URL, label="url", url="https://example.org"),
-        ],
-    )
-
-    res = await bot.wait_for("button_click")
-    if res.channel == msg.channel:
-        await res.respond(
-            type=InteractionType.ChannelMessageWithSource,
-            content=f'{res.component.label} clicked'
-        )
+    await ctx.send(f'주사위를 굴려서 {random.randint(1, int(number))}이 나왔습니다')
 
 
 @bot.command()
