@@ -5,7 +5,7 @@ import random
 
 import json
 
-game = discord.Game("자경 스피드패작")
+game = discord.Game("자경 스피드패작?")
 bot = commands.Bot(command_prefix='!', Status=discord.Status.online, activity=game)
 client = discord.Client()
 
