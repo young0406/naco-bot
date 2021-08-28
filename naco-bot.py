@@ -63,7 +63,7 @@ async def dice(ctx, number:int):
     await ctx.send(f'주사위를 굴려서 {random.randint(1, int(number))}이 나왔습니다')
 
 @bot.command()
-async def dice(ctx):
+async def name(ctx):
     await ctx.send(f'author : {str(ctx.message.author)}')
     await ctx.send(f'user : {str(ctx.message.author.user)}')
     await ctx.send(f'user id : {str(ctx.message.author.user.id)}')
