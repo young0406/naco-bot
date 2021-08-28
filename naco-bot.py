@@ -6,7 +6,11 @@ import random
 
 import json
 
-game = discord.Game("자경 스피드패작?1")
+import firebase_admin
+from firebase_admin import credentials
+from firebase_admin import db
+
+game = discord.Game("오버워치 접었습니다")
 bot = commands.Bot(command_prefix='!', Status=discord.Status.online, activity=game)
 client = discord.Client()
 
@@ -61,6 +65,19 @@ async def dice(ctx, number:int):
 @bot.command(aliases=['가위바위보'])
 async def rsp(ctx, number:int):
     await ctx.send(f'주사위를 굴려서 {random.randint(1, int(number))}이 나왔습니다')
+
+@bot.command()
+async def firebase(ctx):
+    #Firebase database 인증 및 앱 초기화
+    cred = credentials.Certificate('naco-bot-firebase-adminsdk-yrm0i-1b91a9db3f.json')
+    firebase_admin.initialize_app(cred,{
+        'databaseURL' : 'https://naco-bot-default-rtdb.asia-southeast1.firebasedatabase.app/'
+    })
+    
+    dir = db.reference() #기본 위치 지정
+    dir.update({'battle_tag':'Naco#0801'})
+
+    await ctx.send(f'Updated')
 
 
 @bot.command()
