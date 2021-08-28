@@ -10,10 +10,29 @@ import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import db
 
-game = discord.Game("오버워치 접었습니다")
+game = discord.Game("자경 스피드패작")
 bot = commands.Bot(command_prefix='!', Status=discord.Status.online, activity=game)
 client = discord.Client()
 
+cred_json = OrderedDict()
+cred_json["type"] = os.environ["type"]
+cred_json["project_id"] = os.environ["project_id"]
+cred_json["private_key_id"] = os.environ["private_key_id"]
+cred_json["private_key"] = os.environ["private_key"].replace('\\n', '\n')
+cred_json["client_email"] = os.environ["client_email"]
+cred_json["client_id"] = os.environ["client_id"]
+cred_json["auth_uri"] = os.environ["auth_uri"]
+cred_json["token_uri"] = os.environ["token_uri"]
+cred_json["auth_provider_x509_cert_url"] = os.environ["auth_provider_x509_cert_url"]
+cred_json["client_x509_cert_url"] = os.environ["client_x509_cert_url"]
+
+JSON = json.dumps(cred_json)
+JSON = json.loads(JSON)
+
+cred = credentials.Certificate(JSON)
+firebase_admin.initialize_app(cred,{
+    'databaseURL' : os.environ["databaseURL"]
+})
 
 @bot.command(name='feedback', help='Ask person for feedback')
 async def shop(ctx):
@@ -106,12 +125,6 @@ async def firebase_history(ctx, account_num, match_num):
         name = "Naco"
     elif author == "Editor AlriC#9874":
         name = "Editor AlriC"
-
-    cred = credentials.Certificate('naco-bot-firebase-adminsdk-yrm0i-1b91a9db3f.json')
-    firebase_admin.initialize_app(cred,{
-        'databaseURL' : 'https://naco-bot-default-rtdb.asia-southeast1.firebasedatabase.app/'
-    })
-    dir = db.reference() #기본 위치 지정
 
     dir_account_battletag = db.reference(f'battle_tag/{name}/{account_num}')
     dir_score_flx = db.reference(f'score/{name}/{account_num}/flx/{match_num}')
