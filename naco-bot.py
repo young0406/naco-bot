@@ -14,12 +14,6 @@ game = discord.Game("오버워치 접었습니다")
 bot = commands.Bot(command_prefix='!', Status=discord.Status.online, activity=game)
 client = discord.Client()
 
-cred = credentials.Certificate('naco-bot-firebase-adminsdk-yrm0i-1b91a9db3f.json')
-firebase_admin.initialize_app(cred,{
-    'databaseURL' : 'https://naco-bot-default-rtdb.asia-southeast1.firebasedatabase.app/'
-})
-
-dir = db.reference() #기본 위치 지정
 
 @bot.command(name='feedback', help='Ask person for feedback')
 async def shop(ctx):
@@ -112,7 +106,13 @@ async def firebase_history(ctx, account_num, match_num):
         name = "Naco"
     elif author == "Editor AlriC#9874":
         name = "Editor AlriC"
-    
+
+    cred = credentials.Certificate('naco-bot-firebase-adminsdk-yrm0i-1b91a9db3f.json')
+    firebase_admin.initialize_app(cred,{
+        'databaseURL' : 'https://naco-bot-default-rtdb.asia-southeast1.firebasedatabase.app/'
+    })
+    dir = db.reference() #기본 위치 지정
+
     dir_account_battletag = db.reference(f'battle_tag/{name}/{account_num}')
     dir_score_flx = db.reference(f'score/{name}/{account_num}/flx/{match_num}')
     dir_score_tnk = db.reference(f'score/{name}/{account_num}/tnk/{match_num}')
