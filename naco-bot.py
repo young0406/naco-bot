@@ -14,25 +14,6 @@ game = discord.Game("자경 스피드패작")
 bot = commands.Bot(command_prefix='!', Status=discord.Status.online, activity=game)
 client = discord.Client()
 
-cred_json = OrderedDict()
-cred_json["type"] = os.environ["type"]
-cred_json["project_id"] = os.environ["project_id"]
-cred_json["private_key_id"] = os.environ["private_key_id"]
-cred_json["private_key"] = os.environ["private_key"].replace('\\n', '\n')
-cred_json["client_email"] = os.environ["client_email"]
-cred_json["client_id"] = os.environ["client_id"]
-cred_json["auth_uri"] = os.environ["auth_uri"]
-cred_json["token_uri"] = os.environ["token_uri"]
-cred_json["auth_provider_x509_cert_url"] = os.environ["auth_provider_x509_cert_url"]
-cred_json["client_x509_cert_url"] = os.environ["client_x509_cert_url"]
-
-JSON = json.dumps(cred_json)
-JSON = json.loads(JSON)
-
-cred = credentials.Certificate(JSON)
-firebase_admin.initialize_app(cred,{
-    'databaseURL' : os.environ["databaseURL"]
-})
 
 @bot.command(name='feedback', help='Ask person for feedback')
 async def shop(ctx):
@@ -126,6 +107,26 @@ async def firebase_history(ctx, account_num, match_num):
     elif author == "Editor AlriC#9874":
         name = "Editor AlriC"
 
+    cred_json = OrderedDict()
+    cred_json["type"] = os.environ["type"]
+    cred_json["project_id"] = os.environ["project_id"]
+    cred_json["private_key_id"] = os.environ["private_key_id"]
+    cred_json["private_key"] = os.environ["private_key"].replace('\\n', '\n')
+    cred_json["client_email"] = os.environ["client_email"]
+    cred_json["client_id"] = os.environ["client_id"]
+    cred_json["auth_uri"] = os.environ["auth_uri"]
+    cred_json["token_uri"] = os.environ["token_uri"]
+    cred_json["auth_provider_x509_cert_url"] = os.environ["auth_provider_x509_cert_url"]
+    cred_json["client_x509_cert_url"] = os.environ["client_x509_cert_url"]
+
+    JSON = json.dumps(cred_json)
+    JSON = json.loads(JSON)
+
+    cred = credentials.Certificate(JSON)
+    firebase_admin.initialize_app(cred,{
+        'databaseURL' : os.environ["databaseURL"]
+    })
+
     dir_account_battletag = db.reference(f'battle_tag/{name}/{account_num}')
     dir_score_flx = db.reference(f'score/{name}/{account_num}/flx/{match_num}')
     dir_score_tnk = db.reference(f'score/{name}/{account_num}/tnk/{match_num}')
@@ -133,7 +134,7 @@ async def firebase_history(ctx, account_num, match_num):
     dir_score_sup = db.reference(f'score/{name}/{account_num}/sup/{match_num}')
 
     embed = discord.Embed(title="<:ranker:875330517166338098>오버워치 계정 관리<:ranker:875330517166338098>", description=f"현재 사용자 : {ctx.message.author.name}", color=0x4432a8)
-    embed.add_field(name=f"{dir_account_battletag}", value=f"{tier(dir_score_flx)} FLX {dir_score_flx}\n{tier(dir_score_tnk)} TNK {dir_score_tnk}\n{tier(dir_score_dps)} DPS {dir_score_dps}\n{tier(dir_score_sup)} SUP {dir_score_sup}", inline=True)
+    embed.add_field(name=f"{dir_account_battletag.get()}", value=f"{tier(dir_score_flx.get())} FLX {dir_score_flx.get()}\n{tier(dir_score_tnk.get())} TNK {dir_score_tnk.get()}\n{tier(dir_score_dps.get())} DPS {dir_score_dps.get()}\n{tier(dir_score_sup.get())} SUP {dir_score_sup.get()}", inline=True)
     message = await ctx.send(embed=embed)
 
 @bot.command(aliases=['입력'])
