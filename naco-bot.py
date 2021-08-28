@@ -62,6 +62,13 @@ async def hello(ctx):
 async def dice(ctx, number:int):
     await ctx.send(f'주사위를 굴려서 {random.randint(1, int(number))}이 나왔습니다')
 
+@bot.command()
+async def dice(ctx):
+    await ctx.send(f'author : {str(ctx.message.author)}')
+    await ctx.send(f'user : {str(ctx.message.author.user)}')
+    await ctx.send(f'user id : {str(ctx.message.author.user.id)}')
+    await ctx.send(f'name : {str(ctx.message.author.name)}')
+
 @bot.command(aliases=['가위바위보'])
 async def rsp(ctx, number:int):
     await ctx.send(f'주사위를 굴려서 {random.randint(1, int(number))}이 나왔습니다')
@@ -77,7 +84,7 @@ async def firebase(ctx):
     dir = db.reference() #기본 위치 지정
     dir.update({'battle_tag':'Naco#0801'})
 
-    await ctx.send(f'Updated')
+    await ctx.send('Updated')
 
 
 @bot.command()
