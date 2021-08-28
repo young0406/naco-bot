@@ -14,6 +14,13 @@ game = discord.Game("오버워치 접었습니다")
 bot = commands.Bot(command_prefix='!', Status=discord.Status.online, activity=game)
 client = discord.Client()
 
+cred = credentials.Certificate('naco-bot-firebase-adminsdk-yrm0i-1b91a9db3f.json')
+firebase_admin.initialize_app(cred,{
+    'databaseURL' : 'https://naco-bot-default-rtdb.asia-southeast1.firebasedatabase.app/'
+})
+
+dir = db.reference() #기본 위치 지정
+
 @bot.command(name='feedback', help='Ask person for feedback')
 async def shop(ctx):
     embed = discord.Embed(title="SHOP BOT",description="SHOP 아이템 목록. 쇼핑을 합시다", color=0x00aaaa)
@@ -74,20 +81,6 @@ async def rsp(ctx, number:int):
     await ctx.send(f'주사위를 굴려서 {random.randint(1, int(number))}이 나왔습니다')
 
 @bot.command()
-async def firebase(ctx):
-    #Firebase database 인증 및 앱 초기화
-    cred = credentials.Certificate('naco-bot-firebase-adminsdk-yrm0i-1b91a9db3f.json')
-    firebase_admin.initialize_app(cred,{
-        'databaseURL' : 'https://naco-bot-default-rtdb.asia-southeast1.firebasedatabase.app/'
-    })
-    
-    dir = db.reference() #기본 위치 지정
-    dir.update({'battle_tag':'Naco#0801'})
-
-    await ctx.send('Updated')
-
-
-@bot.command()
 async def commands(ctx):
     embed = discord.Embed(title="Naco Bot", description="Made bt Naco#0801", color=0x4432a8)
     embed.add_field(name="1. Hello", value="!hello", inline=False)
@@ -109,6 +102,25 @@ async def history(ctx, account_num, match_num):
 
     embed = discord.Embed(title="<:ranker:875330517166338098>오버워치 계정 관리<:ranker:875330517166338098>", description=f"현재 사용자 : {ctx.message.author.name}", color=0x4432a8)
     embed.add_field(name=f"{account_battletag}", value=f"{tier(score_flx)} FLX {score_flx}\n{tier(score_tnk)} TNK {score_tnk}\n{tier(score_dps)} DPS {score_dps}\n{tier(score_sup)} SUP {score_sup}", inline=True)
+    message = await ctx.send(embed=embed)
+
+@bot.command(aliases=['기록'])
+async def firebase_history(ctx, account_num, match_num):
+
+    author = str(ctx.message.author)
+    if author == "Naco#0801":
+        name = "Naco"
+    elif author == "Editor AlriC#9874":
+        name = "Editor AlriC"
+    
+    dir_account_battletag = db.reference(f'battle_tag/{name}/{account_num}')
+    dir_score_flx = db.reference(f'score/{name}/{account_num}/flx/{match_num}')
+    dir_score_tnk = db.reference(f'score/{name}/{account_num}/tnk/{match_num}')
+    dir_score_dps = db.reference(f'score/{name}/{account_num}/dps/{match_num}')
+    dir_score_sup = db.reference(f'score/{name}/{account_num}/sup/{match_num}')
+
+    embed = discord.Embed(title="<:ranker:875330517166338098>오버워치 계정 관리<:ranker:875330517166338098>", description=f"현재 사용자 : {ctx.message.author.name}", color=0x4432a8)
+    embed.add_field(name=f"{dir_account_battletag}", value=f"{tier(dir_score_flx)} FLX {dir_score_flx}\n{tier(dir_score_tnk)} TNK {dir_score_tnk}\n{tier(dir_score_dps)} DPS {dir_score_dps}\n{tier(dir_score_sup)} SUP {dir_score_sup}", inline=True)
     message = await ctx.send(embed=embed)
 
 @bot.command(aliases=['입력'])
