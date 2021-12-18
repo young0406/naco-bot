@@ -107,24 +107,29 @@ async def firebase_history(ctx, account_num, match_num):
     elif author == "Editor AlriC#9874":
         name = "Editor AlriC"
 
-    cred_json = OrderedDict()
-    cred_json["type"] = os.environ["type"]
-    cred_json["project_id"] = os.environ["project_id"]
-    cred_json["private_key_id"] = os.environ["private_key_id"]
-    cred_json["private_key"] = os.environ["private_key"].replace('\\n', '\n')
-    cred_json["client_email"] = os.environ["client_email"]
-    cred_json["client_id"] = os.environ["client_id"]
-    cred_json["auth_uri"] = os.environ["auth_uri"]
-    cred_json["token_uri"] = os.environ["token_uri"]
-    cred_json["auth_provider_x509_cert_url"] = os.environ["auth_provider_x509_cert_url"]
-    cred_json["client_x509_cert_url"] = os.environ["client_x509_cert_url"]
+    # cred_json = OrderedDict()
+    # cred_json["type"] = os.environ["type"]
+    # cred_json["project_id"] = os.environ["project_id"]
+    # cred_json["private_key_id"] = os.environ["private_key_id"]
+    # cred_json["private_key"] = os.environ["private_key"].replace('\\n', '\n')
+    # cred_json["client_email"] = os.environ["client_email"]
+    # cred_json["client_id"] = os.environ["client_id"]
+    # cred_json["auth_uri"] = os.environ["auth_uri"]
+    # cred_json["token_uri"] = os.environ["token_uri"]
+    # cred_json["auth_provider_x509_cert_url"] = os.environ["auth_provider_x509_cert_url"]
+    # cred_json["client_x509_cert_url"] = os.environ["client_x509_cert_url"]
 
-    JSON = json.dumps(cred_json)
-    JSON = json.loads(JSON)
+    # JSON = json.dumps(cred_json)
+    # JSON = json.loads(JSON)
 
-    cred = credentials.Certificate(JSON)
+    # cred = credentials.Certificate(JSON)
+    # firebase_admin.initialize_app(cred,{
+    #     'databaseURL' : os.environ["databaseURL"]
+    # })
+
+    cred = credentials.Certificate('naco-bot-firebase-adminsdk-yrm0i-1b91a9db3f.json')
     firebase_admin.initialize_app(cred,{
-        'databaseURL' : os.environ["databaseURL"]
+        'databaseURL' : 'https://naco-bot-default-rtdb.asia-southeast1.firebasedatabase.app/'
     })
 
     dir_account_battletag = db.reference(f'battle_tag/{name}/{account_num}')
@@ -143,8 +148,8 @@ async def input(ctx, new_score):
     # with open('data.json') as f:
     #     json_object = json.load(f)
 
-    # account_num = 0
-    # current_position = "flx"
+    account_num = 0
+    current_position = "flx"
 
     # author = str(ctx.message.author)
     # account_battletag = json_object['battle_tag'][author][account_num]
@@ -193,10 +198,9 @@ async def input(ctx, new_score):
 
     dir = db.reference()
     dir.update({'hello':'test'})
-    
-    await ctx.send(f'Hello, {ctx.author.mention}!')
 
-    #embed = discord.Embed(title="<:ranker:875330517166338098>오버워치 계정 관리<:ranker:875330517166338098>", description=f"현재 사용자 : {ctx.message.author.name}", color=0x4432a8)
-    #embed.add_field(name=f"{account_battletag}", value=f"{tier(score_flx)} FLX {score_flx}\n{tier(score_tnk)} TNK {score_tnk}\n{tier(score_dps)} DPS {score_dps}\n{tier(score_sup)} SUP {score_sup}\nUpdated!", inline=True)
-     
+    embed = discord.Embed(title="<:ranker:875330517166338098>오버워치 계정 관리<:ranker:875330517166338098>", description=f"현재 사용자 : {ctx.message.author.name}", color=0x4432a8)
+    embed.add_field(name=f"{account_battletag}", value=f"{tier(score_flx)} FLX {score_flx}\n{tier(score_tnk)} TNK {score_tnk}\n{tier(score_dps)} DPS {score_dps}\n{tier(score_sup)} SUP {score_sup}\nUpdated!", inline=True)
+    message = await ctx.send(embed=embed)
+
 bot.run(os.environ['token'])
