@@ -139,31 +139,62 @@ async def firebase_history(ctx, account_num, match_num):
 
 @bot.command(aliases=['입력'])
 async def input(ctx, new_score):
-    with open('data.json') as f:
-        json_object = json.load(f)
 
-    account_num = 0
-    current_position = "flx"
+    # with open('data.json') as f:
+    #     json_object = json.load(f)
+
+    # account_num = 0
+    # current_position = "flx"
+
+    # author = str(ctx.message.author)
+    # account_battletag = json_object['battle_tag'][author][account_num]
+
+    # dict_len = len(json_object['score'][author][account_num][current_position])
+    # len_tnk = len(json_object['score'][author][account_num]['tnk'])
+    # len_dps = len(json_object['score'][author][account_num]['dps'])
+    # len_sup = len(json_object['score'][author][account_num]['sup'])
+
+    # score_flx = int(new_score)
+
+    # score_tnk = json_object['score'][author][account_num]['tnk'][len_tnk]
+    # score_dps = json_object['score'][author][account_num]['dps'][len_dps]
+    # score_sup = json_object['score'][author][account_num]['sup'][len_sup]
+
+    # json_object['score'][author][account_num][current_position][dict_len + 1] = int(new_score)
+
+    # with open('data.json', 'w') as json_file:
+    #     json.dump(json_object, json_file)
 
     author = str(ctx.message.author)
-    account_battletag = json_object['battle_tag'][author][account_num]
+    if author == "Naco#0801":
+        name = "Naco"
+    elif author == "Editor AlriC#9874":
+        name = "Editor AlriC"
 
-    dict_len = len(json_object['score'][author][account_num][current_position])
-    len_tnk = len(json_object['score'][author][account_num]['tnk'])
-    len_dps = len(json_object['score'][author][account_num]['dps'])
-    len_sup = len(json_object['score'][author][account_num]['sup'])
+    cred_json = OrderedDict()
+    cred_json["type"] = os.environ["type"]
+    cred_json["project_id"] = os.environ["project_id"]
+    cred_json["private_key_id"] = os.environ["private_key_id"]
+    cred_json["private_key"] = os.environ["private_key"].replace('\\n', '\n')
+    cred_json["client_email"] = os.environ["client_email"]
+    cred_json["client_id"] = os.environ["client_id"]
+    cred_json["auth_uri"] = os.environ["auth_uri"]
+    cred_json["token_uri"] = os.environ["token_uri"]
+    cred_json["auth_provider_x509_cert_url"] = os.environ["auth_provider_x509_cert_url"]
+    cred_json["client_x509_cert_url"] = os.environ["client_x509_cert_url"]
 
-    score_flx = int(new_score)
+    JSON = json.dumps(cred_json)
+    JSON = json.loads(JSON)
 
-    score_tnk = json_object['score'][author][account_num]['tnk'][len_tnk]
-    score_dps = json_object['score'][author][account_num]['dps'][len_dps]
-    score_sup = json_object['score'][author][account_num]['sup'][len_sup]
+    cred = credentials.Certificate(JSON)
+    firebase_admin.initialize_app(cred,{
+        'databaseURL' : os.environ["databaseURL"]
+    })
 
-    json_object['score'][author][account_num][current_position][dict_len + 1] = int(new_score)
-
-    with open('data.json', 'w') as json_file:
-        json.dump(json_object, json_file)
+    dir = db.reference()
+    dir.update({'hello':'test'})
     
+    await ctx.send(f'Hello, {ctx.author.mention}!')
 
     embed = discord.Embed(title="<:ranker:875330517166338098>오버워치 계정 관리<:ranker:875330517166338098>", description=f"현재 사용자 : {ctx.message.author.name}", color=0x4432a8)
     embed.add_field(name=f"{account_battletag}", value=f"{tier(score_flx)} FLX {score_flx}\n{tier(score_tnk)} TNK {score_tnk}\n{tier(score_dps)} DPS {score_dps}\n{tier(score_sup)} SUP {score_sup}\nUpdated!", inline=True)
