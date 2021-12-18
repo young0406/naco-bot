@@ -10,7 +10,7 @@ import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import db
 
-game = discord.Game("자경 스피드패작")
+game = discord.Game("카이스트 오버워치 커뮤니티 모집")
 bot = commands.Bot(command_prefix='!', Status=discord.Status.online, activity=game)
 client = discord.Client()
 
