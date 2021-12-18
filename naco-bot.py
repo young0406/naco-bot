@@ -171,24 +171,24 @@ async def input(ctx, new_score):
     elif author == "Editor AlriC#9874":
         name = "Editor AlriC"
 
-    cred_json = OrderedDict()
-    cred_json["type"] = os.environ["type"]
-    cred_json["project_id"] = os.environ["project_id"]
-    cred_json["private_key_id"] = os.environ["private_key_id"]
-    cred_json["private_key"] = os.environ["private_key"].replace('\\n', '\n')
-    cred_json["client_email"] = os.environ["client_email"]
-    cred_json["client_id"] = os.environ["client_id"]
-    cred_json["auth_uri"] = os.environ["auth_uri"]
-    cred_json["token_uri"] = os.environ["token_uri"]
-    cred_json["auth_provider_x509_cert_url"] = os.environ["auth_provider_x509_cert_url"]
-    cred_json["client_x509_cert_url"] = os.environ["client_x509_cert_url"]
+    # cred_json = OrderedDict()
+    # cred_json["type"] = os.environ["type"]
+    # cred_json["project_id"] = os.environ["project_id"]
+    # cred_json["private_key_id"] = os.environ["private_key_id"]
+    # cred_json["private_key"] = os.environ["private_key"].replace('\\n', '\n')
+    # cred_json["client_email"] = os.environ["client_email"]
+    # cred_json["client_id"] = os.environ["client_id"]
+    # cred_json["auth_uri"] = os.environ["auth_uri"]
+    # cred_json["token_uri"] = os.environ["token_uri"]
+    # cred_json["auth_provider_x509_cert_url"] = os.environ["auth_provider_x509_cert_url"]
+    # cred_json["client_x509_cert_url"] = os.environ["client_x509_cert_url"]
 
-    JSON = json.dumps(cred_json)
-    JSON = json.loads(JSON)
+    # JSON = json.dumps(cred_json)
+    # JSON = json.loads(JSON)
 
-    cred = credentials.Certificate(JSON)
+    cred = credentials.Certificate('naco-bot-firebase-adminsdk-yrm0i-1b91a9db3f.json')
     firebase_admin.initialize_app(cred,{
-        'databaseURL' : os.environ["databaseURL"]
+        'databaseURL' : 'https://naco-bot-default-rtdb.asia-southeast1.firebasedatabase.app/'
     })
 
     dir = db.reference()
