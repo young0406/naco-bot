@@ -126,9 +126,9 @@ async def account(ctx, account_num):
     dir_user = db.reference(f'naco/{account_num}/user')
 
     if dir_using.get() == 1:
-        embed = discord.Embed(title="<:ranker:875330517166338098>오버워치 계정 관리<:ranker:875330517166338098>", description=f"사용 여부 : {using(dir_using.get())}\n현재 사용자 : {dir_user.get()}", color=0x4432a8)
+        embed = discord.Embed(title="<:ranker:875330517166338098>오버워치 계정 관리<:ranker:875330517166338098>", description=f"{using(dir_using.get())}\n현재 사용자 : {dir_user.get()}", color=0x4432a8)
     else:
-        embed = discord.Embed(title="<:ranker:875330517166338098>오버워치 계정 관리<:ranker:875330517166338098>", description=f"사용 여부 : {using(dir_using.get())}", color=0x4432a8)
+        embed = discord.Embed(title="<:ranker:875330517166338098>오버워치 계정 관리<:ranker:875330517166338098>", description=f"{using(dir_using.get())}", color=0x4432a8)
     embed.add_field(name=f"{dir_account_battletag.get()}", value=f"{tier(dir_score_flx.get())} FLX {dir_score_flx.get()}\n{tier(dir_score_tnk.get())} TNK {dir_score_tnk.get()}\n{tier(dir_score_dps.get())} DPS {dir_score_dps.get()}\n{tier(dir_score_sup.get())} SUP {dir_score_sup.get()}", inline=True)
     message = await ctx.send(embed=embed)
 
